@@ -45,6 +45,11 @@ Route::middleware([
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
+    // Admin routes (requires authentication and admin role)
+    Route::middleware(['auth', 'check_role:super_admin,admin'])->prefix('admin')->name('admin.')->group(function () {
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+    });
+
     // Include authentication routes
     require base_path('routes/auth.php');
 });

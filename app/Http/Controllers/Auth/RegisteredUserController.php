@@ -42,6 +42,11 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Assign super_admin role to the first user in the tenant
+        if (User::count() === 1) {
+            $user->assignRole('super_admin');
+        }
+
         event(new Registered($user));
 
         Auth::login($user);
