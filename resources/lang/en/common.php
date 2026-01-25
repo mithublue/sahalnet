@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'welcome' => 'Welcome',
+    'save' => 'Save',
+    'cancel' => 'Cancel',
+    'delete' => 'Delete',
+    'edit' => 'Edit',
+    'create' => 'Create',
+    'update' => 'Update',
+    'search' => 'Search',
+    'filter' => 'Filter',
+    'actions' => 'Actions',
+    'status' => 'Status',
+    'active' => 'Active',
+    'inactive' => 'Inactive',
+    'yes' => 'Yes',
+    'no' => 'No',
+    'confirm' => 'Confirm',
+    'are_you_sure' => 'Are you sure?',
+    'success' => 'Success',
+    'error' => 'Error',
+    'warning' => 'Warning',
+    'info' => 'Info',
+];

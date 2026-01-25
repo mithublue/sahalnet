@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'welcome' => 'مرحباً',
+    'save' => 'حفظ',
+    'cancel' => 'إلغاء',
+    'delete' => 'حذف',
+    'edit' => 'تعديل',
+    'create' => 'إنشاء',
+    'update' => 'تحديث',
+    'search' => 'بحث',
+    'filter' => 'تصفية',
+    'actions' => 'الإجراءات',
+    'status' => 'الحالة',
+    'active' => 'نشط',
+    'inactive' => 'غير نشط',
+    'yes' => 'نعم',
+    'no' => 'لا',
+    'confirm' => 'تأكيد',
+    'are_you_sure' => 'هل أنت متأكد؟',
+    'success' => 'نجاح',
+    'error' => 'خطأ',
+    'warning' => 'تحذير',
+    'info' => 'معلومات',
+];

@@ -1,0 +1,39 @@
+{
+    "navigation": {
+        "dashboard": "ড্যাশবোর্ড",
+        "users": "ব্যবহারকারীরা",
+        "customers": "গ্রাহকরা",
+        "packages": "প্যাকেজ",
+        "connections": "সংযোগ",
+        "billing": "বিলিং",
+        "invoices": "চালান",
+        "payments": "পেমেন্ট",
+        "reports": "রিপোর্ট",
+        "settings": "সেটিংস",
+        "profile": "প্রোফাইল",
+        "logout": "লগআউট"
+    },
+    "common": {
+        "welcome": "স্বাগতম",
+        "save": "সংরক্ষণ",
+        "cancel": "বাতিল",
+        "delete": "মুছুন",
+        "edit": "সম্পাদনা",
+        "create": "তৈরি করুন",
+        "update": "আপডেট",
+        "search": "অনুসন্ধান",
+        "filter": "ফিল্টার",
+        "actions": "কর্ম",
+        "status": "স্থিতি",
+        "active": "সক্রিয়",
+        "inactive": "নিষ্ক্রিয়",
+        "yes": "হ্যাঁ",
+        "no": "না",
+        "confirm": "নিশ্চিত করুন",
+        "are_you_sure": "আপনি কি নিশ্চিত?",
+        "success": "সফল",
+        "error": "ত্রুটি",
+        "warning": "সতর্কতা",
+        "info": "তথ্য"
+    }
+}
