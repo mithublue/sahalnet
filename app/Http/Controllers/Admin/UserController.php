@@ -22,16 +22,13 @@ class UserController extends Controller
             ->when($request->role, function ($query, $role) {
                 $query->role($role);
             })
-            ->when($request->has('status'), function ($query) use ($request) {
-                $query->where('is_active', $request->status === 'active');
-            })
             ->latest()
             ->paginate(15)
             ->withQueryString();
 
         return Inertia::render('Admin/Users/Index', [
             'users' => $users,
-            'filters' => $request->only(['search', 'role', 'status']),
+            'filters' => $request->only(['search', 'role']),
             'roles' => Role::all(),
         ]);
     }
@@ -51,15 +48,12 @@ class UserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'phone' => 'nullable|string|max:20',
             'role' => 'required|exists:roles,name',
-            'is_active' => 'boolean',
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'phone' => $validated['phone'] ?? null,
-            'is_active' => $validated['is_active'] ?? true,
         ]);
 
         $user->assignRole($validated['role']);
@@ -84,14 +78,11 @@ class UserController extends Controller
             'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
             'phone' => 'nullable|string|max:20',
             'role' => 'required|exists:roles,name',
-            'is_active' => 'boolean',
         ]);
 
         $user->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
-            'phone' => $validated['phone'] ?? null,
-            'is_active' => $validated['is_active'] ?? true,
         ]);
 
         if (!empty($validated['password'])) {

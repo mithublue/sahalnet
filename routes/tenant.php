@@ -35,7 +35,30 @@ Route::middleware([
 
     // Dashboard (requires authentication)
     Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
+        $stats = [
+            'total_customers' => \App\Models\Customer::count(),
+            'active_customers' => \App\Models\Customer::where('status', 'active')->count(),
+            'total_packages' => \App\Models\Package::count(),
+            'active_packages' => \App\Models\Package::where('is_active', true)->count(),
+            'total_connections' => \App\Models\Connection::count(),
+            'active_connections' => \App\Models\Connection::where('status', 'active')->count(),
+            'suspended_connections' => \App\Models\Connection::where('status', 'suspended')->count(),
+            'expiring_soon' => \App\Models\Connection::where('expiry_date', '<=', now()->addDays(7))
+                ->where('status', 'active')
+                ->count(),
+        ];
+
+        $recent_customers = \App\Models\Customer::latest()->take(5)->get();
+        $recent_connections = \App\Models\Connection::with(['customer', 'package'])
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return Inertia::render('Dashboard', [
+            'stats' => $stats,
+            'recent_customers' => $recent_customers,
+            'recent_connections' => $recent_connections,
+        ]);
     })->middleware(['auth', 'verified'])->name('dashboard');
 
     // Profile routes (requires authentication)
@@ -47,7 +70,21 @@ Route::middleware([
 
     // Admin routes (requires authentication and admin role)
     Route::middleware(['auth', 'check_role:super_admin,admin'])->prefix('admin')->name('admin.')->group(function () {
+        // Users
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+        
+        // Customers
+        Route::resource('customers', \App\Http\Controllers\Admin\CustomerController::class);
+        
+        // Packages
+        Route::resource('packages', \App\Http\Controllers\Admin\PackageController::class);
+        Route::post('packages/{package}/toggle', [\App\Http\Controllers\Admin\PackageController::class, 'toggle'])->name('packages.toggle');
+        
+        // Connections
+        Route::resource('connections', \App\Http\Controllers\Admin\ConnectionController::class);
+        Route::post('connections/{connection}/suspend', [\App\Http\Controllers\Admin\ConnectionController::class, 'suspend'])->name('connections.suspend');
+        Route::post('connections/{connection}/activate', [\App\Http\Controllers\Admin\ConnectionController::class, 'activate'])->name('connections.activate');
+        Route::post('connections/{connection}/renew', [\App\Http\Controllers\Admin\ConnectionController::class, 'renew'])->name('connections.renew');
     });
 
     // Include authentication routes

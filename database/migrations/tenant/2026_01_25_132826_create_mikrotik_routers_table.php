@@ -11,13 +11,18 @@ return new class extends Migration
         Schema::create('mikrotik_routers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('ip_address', 45);
+            $table->string('host'); // IP address or hostname
             $table->integer('port')->default(8728);
             $table->string('username');
-            $table->string('password');
+            $table->text('password'); // Will be encrypted
             $table->boolean('is_active')->default(true);
-            $table->timestamp('last_sync_at')->nullable();
+            $table->enum('connection_status', ['connected', 'disconnected', 'error'])->default('disconnected');
+            $table->integer('total_connections')->default(0);
+            $table->timestamp('last_connected_at')->nullable();
             $table->timestamps();
+            
+            $table->index('is_active');
+            $table->index('connection_status');
         });
     }
 

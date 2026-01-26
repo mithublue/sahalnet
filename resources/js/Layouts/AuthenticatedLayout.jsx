@@ -30,6 +30,30 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    href={route('admin.customers.index')}
+                                    active={route().current('admin.customers.*')}
+                                >
+                                    Customers
+                                </NavLink>
+                                <NavLink
+                                    href={route('admin.packages.index')}
+                                    active={route().current('admin.packages.*')}
+                                >
+                                    Packages
+                                </NavLink>
+                                <NavLink
+                                    href={route('admin.connections.index')}
+                                    active={route().current('admin.connections.*')}
+                                >
+                                    Connections
+                                </NavLink>
+                                <NavLink
+                                    href={route('admin.users.index')}
+                                    active={route().current('admin.users.*')}
+                                >
+                                    Users
+                                </NavLink>
                             </div>
                         </div>
 
@@ -133,6 +157,30 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('dashboard')}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.customers.index')}
+                            active={route().current('admin.customers.*')}
+                        >
+                            Customers
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.packages.index')}
+                            active={route().current('admin.packages.*')}
+                        >
+                            Packages
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.connections.index')}
+                            active={route().current('admin.connections.*')}
+                        >
+                            Connections
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.users.index')}
+                            active={route().current('admin.users.*')}
+                        >
+                            Users
                         </ResponsiveNavLink>
                     </div>
 

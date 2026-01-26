@@ -127,19 +127,6 @@ export default function Create({ roles }) {
                                 {errors.role && <p className="mt-1 text-sm text-red-600">{errors.role}</p>}
                             </div>
 
-                            {/* Active Status */}
-                            <div className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    checked={data.is_active}
-                                    onChange={(e) => setData('is_active', e.target.checked)}
-                                    className="rounded border-gray-300 dark:border-gray-700 dark:bg-gray-900 text-indigo-600"
-                                />
-                                <label className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                                    Active
-                                </label>
-                            </div>
-
                             {/* Submit Button */}
                             <div className="flex justify-end gap-4">
                                 <Link

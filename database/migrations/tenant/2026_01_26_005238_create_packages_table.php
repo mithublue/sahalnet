@@ -11,13 +11,16 @@ return new class extends Migration
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('bandwidth_download')->comment('in Mbps');
-            $table->integer('bandwidth_upload')->comment('in Mbps');
+            $table->integer('bandwidth_download'); // in Mbps
+            $table->integer('bandwidth_upload'); // in Mbps
             $table->decimal('price', 10, 2);
-            $table->enum('billing_cycle', ['monthly', 'quarterly', 'half_yearly', 'yearly'])->default('monthly');
+            $table->decimal('setup_fee', 10, 2)->default(0);
+            $table->integer('validity_days')->default(30);
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+
+            $table->index('is_active');
         });
     }
 

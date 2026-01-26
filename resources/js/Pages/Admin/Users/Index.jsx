@@ -5,11 +5,10 @@ import { useState } from 'react';
 export default function Index({ users, filters, roles }) {
     const [search, setSearch] = useState(filters.search || '');
     const [role, setRole] = useState(filters.role || '');
-    const [status, setStatus] = useState(filters.status || '');
 
     const handleSearch = (e) => {
         e.preventDefault();
-        router.get(route('admin.users.index'), { search, role, status }, {
+        router.get(route('admin.users.index'), { search, role }, {
             preserveState: true,
             replace: true,
         });
@@ -54,7 +53,7 @@ export default function Index({ users, filters, roles }) {
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     {/* Search and Filters */}
                     <div className="mb-6 bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg p-6">
-                        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
                                 <input
                                     type="text"
@@ -76,17 +75,6 @@ export default function Index({ users, filters, roles }) {
                                             {r.name.replace('_', ' ').toUpperCase()}
                                         </option>
                                     ))}
-                                </select>
-                            </div>
-                            <div>
-                                <select
-                                    value={status}
-                                    onChange={(e) => setStatus(e.target.value)}
-                                    className="w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
-                                >
-                                    <option value="">All Status</option>
-                                    <option value="active">Active</option>
-                                    <option value="inactive">Inactive</option>
                                 </select>
                             </div>
                             <div>
@@ -151,8 +139,8 @@ export default function Index({ users, filters, roles }) {
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span
                                                     className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${user.is_active
-                                                            ? 'bg-green-100 text-green-800'
-                                                            : 'bg-red-100 text-red-800'
+                                                        ? 'bg-green-100 text-green-800'
+                                                        : 'bg-red-100 text-red-800'
                                                         }`}
                                                 >
                                                     {user.is_active ? 'Active' : 'Inactive'}
@@ -194,8 +182,8 @@ export default function Index({ users, filters, roles }) {
                                                 key={index}
                                                 href={link.url || '#'}
                                                 className={`px-3 py-1 rounded ${link.active
-                                                        ? 'bg-indigo-600 text-white'
-                                                        : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                                                    ? 'bg-indigo-600 text-white'
+                                                    : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
                                                     } ${!link.url && 'opacity-50 cursor-not-allowed'}`}
                                                 dangerouslySetInnerHTML={{ __html: link.label }}
                                             />
