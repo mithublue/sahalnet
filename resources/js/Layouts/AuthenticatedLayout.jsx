@@ -72,6 +72,26 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Users
                                 </NavLink>
+                                <NavLink
+                                    href={route('admin.roles.index')}
+                                    active={route().current('admin.roles.*')}
+                                >
+                                    Roles
+                                </NavLink>
+                                <NavLink
+                                    href={route('admin.permissions.index')}
+                                    active={route().current('admin.permissions.*')}
+                                >
+                                    Permissions
+                                </NavLink>
+                                {user.roles?.some(role => role.name === 'super_admin') && (
+                                    <NavLink
+                                        href={route('admin.dummy-data.index')}
+                                        active={route().current('admin.dummy-data.*')}
+                                    >
+                                        Dummy Data
+                                    </NavLink>
+                                )}
                             </div>
                         </div>
 

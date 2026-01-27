@@ -1,32 +1,32 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link } from '@inertiajs/react';
 
-export default function Dashboard({ stats, recent_customers, recent_connections }) {
+export default function Dashboard({ stats = {}, recent_customers = [], recent_connections = [] }) {
     const statCards = [
         {
             title: 'Total Customers',
-            value: stats.total_customers,
-            subtitle: `${stats.active_customers} active`,
+            value: stats.total_customers || 0,
+            subtitle: `${stats.active_customers || 0} active`,
             color: 'bg-blue-500',
             icon: '👥',
         },
         {
             title: 'Total Packages',
-            value: stats.total_packages,
-            subtitle: `${stats.active_packages} active`,
+            value: stats.total_packages || 0,
+            subtitle: `${stats.active_packages || 0} active`,
             color: 'bg-green-500',
             icon: '📦',
         },
         {
             title: 'Total Connections',
-            value: stats.total_connections,
-            subtitle: `${stats.active_connections} active`,
+            value: stats.total_connections || 0,
+            subtitle: `${stats.active_connections || 0} active`,
             color: 'bg-purple-500',
             icon: '🔗',
         },
         {
             title: 'Expiring Soon',
-            value: stats.expiring_soon,
+            value: stats.expiring_soon || 0,
             subtitle: 'Within 7 days',
             color: 'bg-orange-500',
             icon: '⚠️',
@@ -107,10 +107,10 @@ export default function Dashboard({ stats, recent_customers, recent_connections 
                                                 </div>
                                                 <span
                                                     className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${customer.status === 'active'
-                                                            ? 'bg-green-100 text-green-800'
-                                                            : customer.status === 'pending'
-                                                                ? 'bg-yellow-100 text-yellow-800'
-                                                                : 'bg-gray-100 text-gray-800'
+                                                        ? 'bg-green-100 text-green-800'
+                                                        : customer.status === 'pending'
+                                                            ? 'bg-yellow-100 text-yellow-800'
+                                                            : 'bg-gray-100 text-gray-800'
                                                         }`}
                                                 >
                                                     {customer.status}
@@ -157,10 +157,10 @@ export default function Dashboard({ stats, recent_customers, recent_connections 
                                                 </div>
                                                 <span
                                                     className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${connection.status === 'active'
-                                                            ? 'bg-green-100 text-green-800'
-                                                            : connection.status === 'suspended'
-                                                                ? 'bg-red-100 text-red-800'
-                                                                : 'bg-gray-100 text-gray-800'
+                                                        ? 'bg-green-100 text-green-800'
+                                                        : connection.status === 'suspended'
+                                                            ? 'bg-red-100 text-red-800'
+                                                            : 'bg-gray-100 text-gray-800'
                                                         }`}
                                                 >
                                                     {connection.status}

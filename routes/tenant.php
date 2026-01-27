@@ -73,6 +73,14 @@ Route::middleware([
         // Users
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
         
+        // Roles & Permissions Management
+        Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
+        Route::resource('permissions', \App\Http\Controllers\Admin\PermissionController::class)->except(['edit', 'update']);
+        
+        // Dummy Data Installer (Super Admin Only)
+        Route::get('/dummy-data', [\App\Http\Controllers\Admin\DummyDataController::class, 'index'])->name('dummy-data.index');
+        Route::post('/dummy-data/install', [\App\Http\Controllers\Admin\DummyDataController::class, 'install'])->name('dummy-data.install');
+        
         // Customers
         Route::resource('customers', \App\Http\Controllers\Admin\CustomerController::class);
         
