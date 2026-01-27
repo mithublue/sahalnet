@@ -2,7 +2,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import MapPicker from '@/Components/MapPicker';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Edit({ customer }) {
+export default function Edit({ customer = {} }) {
     const { data, setData, put, processing, errors } = useForm({
         name: customer.name || '',
         email: customer.email || '',
@@ -23,7 +23,9 @@ export default function Edit({ customer }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put(route('admin.customers.update', customer.id));
+        if (customer?.id) {
+            put(route('admin.customers.update', customer.id));
+        }
     };
 
     const handleLocationChange = (lat, lng) => {
@@ -39,7 +41,7 @@ export default function Edit({ customer }) {
             header={
                 <div className="flex justify-between items-center">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">
-                        Edit Customer: {customer.name}
+                        Edit Customer: {customer?.name || 'Loading...'}
                     </h2>
                     <Link
                         href={route('admin.customers.index')}
@@ -50,7 +52,7 @@ export default function Edit({ customer }) {
                 </div>
             }
         >
-            <Head title={`Edit ${customer.name}`} />
+            <Head title={`Edit ${customer?.name || 'Customer'}`} />
 
             <div className="py-12">
                 <div className="mx-auto max-w-4xl sm:px-6 lg:px-8">

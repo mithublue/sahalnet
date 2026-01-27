@@ -15,8 +15,8 @@ export default function MapPicker({ latitude, longitude, onLocationChange }) {
     const mapInstanceRef = useRef(null);
     const markerRef = useRef(null);
     const [coords, setCoords] = useState({
-        lat: latitude || 23.8103, // Default to Dhaka, Bangladesh
-        lng: longitude || 90.4125,
+        lat: parseFloat(latitude) || 23.8103, // Default to Dhaka, Bangladesh
+        lng: parseFloat(longitude) || 90.4125,
     });
 
     useEffect(() => {
@@ -63,8 +63,8 @@ export default function MapPicker({ latitude, longitude, onLocationChange }) {
     useEffect(() => {
         if (markerRef.current && (latitude !== coords.lat || longitude !== coords.lng)) {
             const newCoords = {
-                lat: latitude || coords.lat,
-                lng: longitude || coords.lng,
+                lat: parseFloat(latitude) || coords.lat,
+                lng: parseFloat(longitude) || coords.lng,
             };
             markerRef.current.setLatLng([newCoords.lat, newCoords.lng]);
             mapInstanceRef.current?.setView([newCoords.lat, newCoords.lng], 13);
@@ -79,7 +79,7 @@ export default function MapPicker({ latitude, longitude, onLocationChange }) {
                 className="w-full h-96 rounded-lg border border-gray-300 dark:border-gray-700"
             />
             <div className="text-sm text-gray-600 dark:text-gray-400">
-                <p>📍 Current Location: {coords.lat.toFixed(6)}, {coords.lng.toFixed(6)}</p>
+                <p>📍 Current Location: {typeof coords.lat === 'number' ? coords.lat.toFixed(6) : '0.000000'}, {typeof coords.lng === 'number' ? coords.lng.toFixed(6) : '0.000000'}</p>
                 <p className="text-xs mt-1">Click on the map or drag the marker to set the location</p>
             </div>
         </div>
