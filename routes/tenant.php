@@ -92,6 +92,20 @@ Route::middleware([
         Route::resource('mikrotik-routers', \App\Http\Controllers\Admin\MikroTikRouterController::class);
         Route::post('mikrotik-routers/{mikrotikRouter}/test', [\App\Http\Controllers\Admin\MikroTikRouterController::class, 'testConnection'])->name('mikrotik-routers.test');
         Route::post('mikrotik-routers/{mikrotikRouter}/sync', [\App\Http\Controllers\Admin\MikroTikRouterController::class, 'syncConnections'])->name('mikrotik-routers.sync');
+        
+        // Invoices
+        Route::resource('invoices', \App\Http\Controllers\Admin\InvoiceController::class);
+        Route::post('invoices/{invoice}/send', [\App\Http\Controllers\Admin\InvoiceController::class, 'send'])->name('invoices.send');
+        Route::post('invoices/{invoice}/mark-paid', [\App\Http\Controllers\Admin\InvoiceController::class, 'markAsPaid'])->name('invoices.mark-paid');
+        Route::get('invoices/{invoice}/pdf', [\App\Http\Controllers\Admin\InvoiceController::class, 'downloadPdf'])->name('invoices.pdf');
+        
+        // Payments
+        Route::resource('payments', \App\Http\Controllers\Admin\PaymentController::class)->except(['edit', 'update']);
+        
+        // Billing Cycles
+        Route::resource('billing-cycles', \App\Http\Controllers\Admin\BillingCycleController::class);
+        Route::post('billing-cycles/{billingCycle}/generate', [\App\Http\Controllers\Admin\BillingCycleController::class, 'generateInvoices'])->name('billing-cycles.generate');
+        Route::post('billing-cycles/{billingCycle}/close', [\App\Http\Controllers\Admin\BillingCycleController::class, 'close'])->name('billing-cycles.close');
     });
 
     // Include authentication routes

@@ -19,14 +19,14 @@ class CreateTenantCommand extends Command
         // Create tenant
         $tenant = Tenant::create(['id' => $domain]);
         
-        // Create domain for tenant
+        // Create domain for tenant (use domain as-is, don't append .localhost)
         Domain::create([
-            'domain' => $domain . '.localhost',
+            'domain' => $domain,
             'tenant_id' => $tenant->id,
         ]);
 
         $this->info("Tenant '{$name}' created successfully!");
-        $this->info("Domain: {$domain}.localhost");
+        $this->info("Domain: {$domain}");
         $this->info("Tenant ID: {$tenant->id}");
 
         return 0;

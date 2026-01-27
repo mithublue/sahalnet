@@ -15,10 +15,10 @@ class PackageController extends Controller
             ->when($request->search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
             })
-            ->when($request->has('status'), function ($query) use ($request) {
+            ->when($request->filled('status'), function ($query) use ($request) {
                 if ($request->status === 'active') {
                     $query->active();
-                } else {
+                } elseif ($request->status === 'inactive') {
                     $query->inactive();
                 }
             })

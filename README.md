@@ -1,59 +1,163 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# ISP Multi-Tenant SaaS - Project Documentation
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Project Overview
+A comprehensive multi-tenant SaaS application for ISP (Internet Service Provider) management with support for multiple languages (English, Arabic, Bengali) and MikroTik router integration.
 
-## About Laravel
+## Technology Stack
+- **Backend:** Laravel 11
+- **Frontend:** React + Inertia.js + Tailwind CSS
+- **Multi-tenancy:** stancl/tenancy
+- **Permissions:** Spatie Laravel Permission
+- **Maps:** Leaflet.js
+- **Database:** MySQL
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Completed Features
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### ✅ Week 1: Foundation & Multi-Tenancy
+- Laravel 11 project setup
+- React + Inertia.js + Tailwind CSS
+- Multi-tenant architecture with subdomain routing
+- Authentication system
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### ✅ Week 2: Localization & User Management
+- Multi-language support (en, ar, bn)
+- RTL/LTR switching
+- User management with roles (super_admin, admin, manager, support, accountant)
+- Permission-based access control
 
-## Learning Laravel
+### ✅ Week 3: Customer & Package Management
+- Customer management with KYC fields
+- GPS-based location tracking with Leaflet.js
+- Internet package management
+- Connection management (suspend/activate/renew)
+- Dashboard with statistics
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### ✅ Week 4: MikroTik Integration (95% Complete)
+- MikroTik router management (CRUD)
+- PPPoE credential auto-generation
+- Connection sync automation
+- Router connection testing
+- Encrypted password storage
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 🔴 Pending Tasks
 
-## Laravel Sponsors
+### MikroTik Integration - Remaining 5%
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+**Task:** Implement Full MikroTik RouterOS API Integration
 
-### Premium Partners
+**Location:** `app/Services/MikroTikService.php`
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+**What's Done:**
+- ✅ Service stub with all method signatures
+- ✅ Database tables and models
+- ✅ Frontend UI complete
+- ✅ Auto-sync functionality
+- ✅ PPPoE credential generation
 
-## Contributing
+**What's Needed:**
+1. **Install MikroTik API Package** (when available)
+   ```bash
+   # Research and install appropriate RouterOS API package
+   # Options: routeros-api-php or similar
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. **Implement API Methods in MikroTikService.php:**
+   - `connect()` - Establish connection to RouterOS API
+   - `createPPPoESecret()` - Create PPPoE user on router
+   - `updatePPPoESecret()` - Update existing PPPoE user
+   - `deletePPPoESecret()` - Remove PPPoE user
+   - `togglePPPoESecret()` - Enable/disable user
+   - `createProfile()` - Create bandwidth profile
+   - `getActiveConnections()` - Fetch active sessions
+   - `disconnectUser()` - Force disconnect user
+   - `getTrafficStats()` - Get user bandwidth usage
 
-## Code of Conduct
+3. **Testing Requirements:**
+   - Physical MikroTik router or RouterOS VM
+   - API service enabled on router (IP → Services → API)
+   - Network connectivity between app server and router
+   - Test credentials with full API access
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+4. **Implementation Steps:**
+   - Replace stub methods with actual API calls
+   - Add error handling and logging
+   - Test each method individually
+   - Implement retry logic for failed connections
+   - Add connection pooling if needed
 
-## Security Vulnerabilities
+**Priority:** Medium (can be done when MikroTik router is available)
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+**Estimated Time:** 4-6 hours with router access
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Next Development Phase
+
+### Week 5: Billing & Invoicing
+- Invoice generation
+- Payment tracking
+- Billing cycles
+- Payment reminders
+
+### Week 6: Accounting Module
+- Chart of accounts
+- Journal entries
+- Financial reports
+
+### Week 7: Inventory Management
+- Equipment tracking
+- Stock management
+
+### Week 8: HR & Payroll
+- Employee management
+- Salary processing
+- Payment gateway integration
+
+---
+
+## Quick Start
+
+### Tenant Creation
+```bash
+php artisan tenant:create {tenant_name} {domain}
+```
+
+### Run Migrations for Tenant
+```bash
+php artisan tenants:migrate --tenants={tenant_name}
+```
+
+### Seed Permissions
+```bash
+php artisan tenants:seed --tenants={tenant_name} --class=RolesAndPermissionsSeeder
+```
+
+### Access Application
+- Landlord: `http://localhost:8000`
+- Tenant: `http://{tenant}.localhost:8000`
+
+---
+
+## Important Notes
+
+### MikroTik Integration
+- Current implementation uses stub methods
+- Full API integration requires physical router
+- All UI and database structure is complete
+- PPPoE credentials auto-generate on connection creation
+
+### Database Structure
+- Landlord database: `isp_landlord`
+- Tenant databases: `{tenant_name}` (e.g., `sahal`, `fresh`)
+
+### Default Credentials
+- Super Admin: (set during tenant creation)
+- Roles: super_admin, admin, manager, support, accountant
+
+---
+
+## Support & Documentation
+For questions or issues, refer to:
+- Laravel Documentation: https://laravel.com/docs
+- Inertia.js Documentation: https://inertiajs.com
+- Stancl Tenancy: https://tenancyforlaravel.com

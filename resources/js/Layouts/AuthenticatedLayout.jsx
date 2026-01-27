@@ -55,6 +55,18 @@ export default function AuthenticatedLayout({ header, children }) {
                                     MikroTik Routers
                                 </NavLink>
                                 <NavLink
+                                    href={route('admin.invoices.index')}
+                                    active={route().current('admin.invoices.*') || route().current('admin.payments.*')}
+                                >
+                                    Invoices
+                                </NavLink>
+                                <NavLink
+                                    href={route('admin.billing-cycles.index')}
+                                    active={route().current('admin.billing-cycles.*')}
+                                >
+                                    Billing Cycles
+                                </NavLink>
+                                <NavLink
                                     href={route('admin.users.index')}
                                     active={route().current('admin.users.*')}
                                 >
