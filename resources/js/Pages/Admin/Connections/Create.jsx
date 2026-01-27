@@ -1,10 +1,14 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Create({ customers, packages }) {
+export default function Create({ customers, packages, routers }) {
     const { data, setData, post, processing, errors } = useForm({
         customer_id: '',
         package_id: '',
+        mikrotik_router_id: '',
+        pppoe_username: '',
+        pppoe_password: '',
+        auto_sync: true,
         ip_address: '',
         mac_address: '',
         installation_date: new Date().toISOString().split('T')[0],
@@ -12,6 +16,27 @@ export default function Create({ customers, packages }) {
         mikrotik_profile: '',
         notes: '',
     });
+
+    // Auto-generate PPPoE credentials when customer is selected
+    const handleCustomerChange = (customerId) => {
+        setData('customer_id', customerId);
+
+        if (customerId) {
+            const customer = customers.find(c => c.id == customerId);
+            if (customer && !data.pppoe_username) {
+                // Generate username from customer ID (e.g., CUST-0001 -> cust0001)
+                const username = customer.customer_id.toLowerCase().replace('-', '');
+                // Generate random password
+                const password = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+                setData(prev => ({
+                    ...prev,
+                    customer_id: customerId,
+                    pppoe_username: username,
+                    pppoe_password: password,
+                }));
+            }
+        }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -47,7 +72,7 @@ export default function Create({ customers, packages }) {
                                 </label>
                                 <select
                                     value={data.customer_id}
-                                    onChange={(e) => setData('customer_id', e.target.value)}
+                                    onChange={(e) => handleCustomerChange(e.target.value)}
                                     className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
                                 >
                                     <option value="">Select Customer</option>
@@ -79,6 +104,72 @@ export default function Create({ customers, packages }) {
                                 </select>
                                 {errors.package_id && <p className="mt-1 text-sm text-red-600">{errors.package_id}</p>}
                             </div>
+
+                            {/* MikroTik Router Selection */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    MikroTik Router
+                                </label>
+                                <select
+                                    value={data.mikrotik_router_id}
+                                    onChange={(e) => setData('mikrotik_router_id', e.target.value)}
+                                    className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                                >
+                                    <option value="">No Router (Manual Setup)</option>
+                                    {routers && routers.map((router) => (
+                                        <option key={router.id} value={router.id}>
+                                            {router.name} ({router.host})
+                                        </option>
+                                    ))}
+                                </select>
+                                <p className="mt-1 text-sm text-gray-500">Select a router to enable automatic PPPoE sync</p>
+                            </div>
+
+                            {/* PPPoE Credentials */}
+                            {data.mikrotik_router_id && (
+                                <div className="border border-blue-200 dark:border-blue-800 rounded-lg p-4 bg-blue-50 dark:bg-blue-900/20">
+                                    <h3 className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-3">
+                                        PPPoE Credentials
+                                    </h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                                PPPoE Username
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={data.pppoe_username}
+                                                onChange={(e) => setData('pppoe_username', e.target.value)}
+                                                placeholder="Auto-generated"
+                                                className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                                PPPoE Password
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={data.pppoe_password}
+                                                onChange={(e) => setData('pppoe_password', e.target.value)}
+                                                placeholder="Auto-generated"
+                                                className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mt-3 flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            checked={data.auto_sync}
+                                            onChange={(e) => setData('auto_sync', e.target.checked)}
+                                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                                        />
+                                        <label className="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                            Auto-sync to MikroTik (create PPPoE secret automatically)
+                                        </label>
+                                    </div>
+                                </div>
+                            )}
 
                             {/* Network Details */}
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

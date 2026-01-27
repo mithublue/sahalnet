@@ -85,6 +85,13 @@ Route::middleware([
         Route::post('connections/{connection}/suspend', [\App\Http\Controllers\Admin\ConnectionController::class, 'suspend'])->name('connections.suspend');
         Route::post('connections/{connection}/activate', [\App\Http\Controllers\Admin\ConnectionController::class, 'activate'])->name('connections.activate');
         Route::post('connections/{connection}/renew', [\App\Http\Controllers\Admin\ConnectionController::class, 'renew'])->name('connections.renew');
+        Route::post('connections/{connection}/sync-mikrotik', [\App\Http\Controllers\Admin\ConnectionController::class, 'syncToMikroTik'])->name('connections.sync-mikrotik');
+        Route::post('connections/{connection}/disconnect-mikrotik', [\App\Http\Controllers\Admin\ConnectionController::class, 'disconnectFromMikroTik'])->name('connections.disconnect-mikrotik');
+        
+        // MikroTik Routers
+        Route::resource('mikrotik-routers', \App\Http\Controllers\Admin\MikroTikRouterController::class);
+        Route::post('mikrotik-routers/{mikrotikRouter}/test', [\App\Http\Controllers\Admin\MikroTikRouterController::class, 'testConnection'])->name('mikrotik-routers.test');
+        Route::post('mikrotik-routers/{mikrotikRouter}/sync', [\App\Http\Controllers\Admin\MikroTikRouterController::class, 'syncConnections'])->name('mikrotik-routers.sync');
     });
 
     // Include authentication routes

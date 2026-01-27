@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Crypt;
 
 class MikroTikRouter extends Model
 {
+    protected $table = 'mikrotik_routers';
+
     protected $fillable = [
         'name',
         'host',

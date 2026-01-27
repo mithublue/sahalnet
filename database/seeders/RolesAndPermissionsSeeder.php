@@ -39,6 +39,14 @@ class RolesAndPermissionsSeeder extends Seeder
             'edit connections',
             'delete connections',
             
+            // MikroTik Routers
+            'view mikrotik routers',
+            'create mikrotik routers',
+            'edit mikrotik routers',
+            'delete mikrotik routers',
+            'test mikrotik connection',
+            'sync mikrotik connections',
+            
             // Billing
             'view invoices',
             'create invoices',
@@ -68,6 +76,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'view customers', 'create customers', 'edit customers', 'delete customers',
             'view packages', 'create packages', 'edit packages', 'delete packages',
             'view connections', 'create connections', 'edit connections', 'delete connections',
+            'view mikrotik routers', 'create mikrotik routers', 'edit mikrotik routers', 'delete mikrotik routers',
+            'test mikrotik connection', 'sync mikrotik connections',
             'view invoices', 'create invoices', 'edit invoices', 'process payments',
             'view reports',
         ]);
