@@ -6,6 +6,8 @@ export default function Edit({ customer = {} }) {
     const { data, setData, put, processing, errors } = useForm({
         name: customer.name || '',
         email: customer.email || '',
+        password: '',
+        password_confirmation: '',
         phone: customer.phone || '',
         secondary_phone: customer.secondary_phone || '',
         nid: customer.nid || '',
@@ -88,6 +90,34 @@ export default function Edit({ customer = {} }) {
                                             className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
                                         />
                                         {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            New Password
+                                        </label>
+                                        <input
+                                            type="password"
+                                            value={data.password}
+                                            onChange={(e) => setData('password', e.target.value)}
+                                            className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                                            placeholder="Leave blank to keep current"
+                                        />
+                                        {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+                                        <p className="mt-1 text-xs text-gray-500">Only fill if you want to change the password</p>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            Confirm New Password
+                                        </label>
+                                        <input
+                                            type="password"
+                                            value={data.password_confirmation}
+                                            onChange={(e) => setData('password_confirmation', e.target.value)}
+                                            className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                                            placeholder="Re-enter new password"
+                                        />
                                     </div>
 
                                     <div>

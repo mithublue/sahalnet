@@ -116,6 +116,21 @@ Route::middleware([
         Route::post('billing-cycles/{billingCycle}/close', [\App\Http\Controllers\Admin\BillingCycleController::class, 'close'])->name('billing-cycles.close');
     });
 
+    // Customer Portal Routes
+    Route::prefix('customer')->name('customer.')->group(function () {
+        // Guest routes (login)
+        Route::middleware(\App\Http\Middleware\RedirectIfCustomerAuthenticated::class)->group(function () {
+            Route::get('/login', [\App\Http\Controllers\Customer\Auth\CustomerAuthController::class, 'showLogin'])->name('login');
+            Route::post('/login', [\App\Http\Controllers\Customer\Auth\CustomerAuthController::class, 'login']);
+        });
+
+        // Authenticated customer routes
+        Route::middleware('auth:customer')->group(function () {
+            Route::post('/logout', [\App\Http\Controllers\Customer\Auth\CustomerAuthController::class, 'logout'])->name('logout');
+            Route::get('/dashboard', [\App\Http\Controllers\Customer\CustomerDashboardController::class, 'index'])->name('dashboard');
+        });
+    });
+
     // Include authentication routes
     require base_path('routes/auth.php');
 });

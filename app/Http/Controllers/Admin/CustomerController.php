@@ -47,6 +47,7 @@ class CustomerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:customers',
+            'password' => 'required|string|min:8|confirmed',
             'phone' => 'required|string|max:20',
             'secondary_phone' => 'nullable|string|max:20',
             'nid' => 'nullable|string|max:50',
@@ -91,6 +92,7 @@ class CustomerController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:customers,email,' . $customer->id,
+            'password' => 'nullable|string|min:8|confirmed',
             'phone' => 'required|string|max:20',
             'secondary_phone' => 'nullable|string|max:20',
             'nid' => 'nullable|string|max:50',
@@ -105,6 +107,11 @@ class CustomerController extends Controller
             'billing_cycle' => 'required|in:monthly,quarterly,yearly',
             'billing_day' => 'required|integer|min:1|max:28',
         ]);
+
+        // Remove password if not provided
+        if (empty($validated['password'])) {
+            unset($validated['password']);
+        }
 
         $customer->update($validated);
 

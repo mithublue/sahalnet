@@ -6,6 +6,8 @@ export default function Create() {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         email: '',
+        password: '',
+        password_confirmation: '',
         phone: '',
         secondary_phone: '',
         nid: '',
@@ -86,6 +88,33 @@ export default function Create() {
                                             className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
                                         />
                                         {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            Password *
+                                        </label>
+                                        <input
+                                            type="password"
+                                            value={data.password}
+                                            onChange={(e) => setData('password', e.target.value)}
+                                            className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                                            placeholder="Min. 8 characters"
+                                        />
+                                        {errors.password && <p className="mt-1 text-sm text-red-600">{errors.password}</p>}
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                            Confirm Password *
+                                        </label>
+                                        <input
+                                            type="password"
+                                            value={data.password_confirmation}
+                                            onChange={(e) => setData('password_confirmation', e.target.value)}
+                                            className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+                                            placeholder="Re-enter password"
+                                        />
                                     </div>
 
                                     <div>
