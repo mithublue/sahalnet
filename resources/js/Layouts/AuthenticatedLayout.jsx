@@ -2,6 +2,7 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
+import NotificationBell from '@/Components/NotificationBell';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
@@ -67,23 +68,52 @@ export default function AuthenticatedLayout({ header, children }) {
                                     Billing Cycles
                                 </NavLink>
                                 <NavLink
-                                    href={route('admin.users.index')}
-                                    active={route().current('admin.users.*')}
+                                    href={route('admin.support-tickets.index')}
+                                    active={route().current('admin.support-tickets.*')}
                                 >
-                                    Users
+                                    Support Tickets
                                 </NavLink>
-                                <NavLink
-                                    href={route('admin.roles.index')}
-                                    active={route().current('admin.roles.*')}
-                                >
-                                    Roles
-                                </NavLink>
-                                <NavLink
-                                    href={route('admin.permissions.index')}
-                                    active={route().current('admin.permissions.*')}
-                                >
-                                    Permissions
-                                </NavLink>
+
+                                {/* Settings Dropdown */}
+                                <div className="relative inline-flex items-center">
+                                    <Dropdown>
+                                        <Dropdown.Trigger>
+                                            <button
+                                                type="button"
+                                                className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium leading-5 transition duration-150 ease-in-out focus:outline-none ${route().current('admin.users.*') || route().current('admin.roles.*') || route().current('admin.permissions.*')
+                                                    ? 'border-indigo-400 text-gray-900 focus:border-indigo-700 dark:border-indigo-600 dark:text-gray-100'
+                                                    : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 focus:border-gray-300 focus:text-gray-700 dark:text-gray-400 dark:hover:border-gray-700 dark:hover:text-gray-300 dark:focus:border-gray-700 dark:focus:text-gray-300'
+                                                    }`}
+                                            >
+                                                Settings
+                                                <svg
+                                                    className="ml-1 h-4 w-4"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 20 20"
+                                                    fill="currentColor"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            </button>
+                                        </Dropdown.Trigger>
+                                        <Dropdown.Content>
+                                            <Dropdown.Link href={route('admin.users.index')}>
+                                                Users
+                                            </Dropdown.Link>
+                                            <Dropdown.Link href={route('admin.roles.index')}>
+                                                Roles
+                                            </Dropdown.Link>
+                                            <Dropdown.Link href={route('admin.permissions.index')}>
+                                                Permissions
+                                            </Dropdown.Link>
+                                        </Dropdown.Content>
+                                    </Dropdown>
+                                </div>
+
                                 {user.roles?.some(role => role.name === 'super_admin') && (
                                     <NavLink
                                         href={route('admin.dummy-data.index')}
@@ -95,7 +125,8 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
 
-                        <div className="hidden sm:ms-6 sm:flex sm:items-center">
+                        <div className="hidden sm:ms-6 sm:flex sm:items-center space-x-4">
+                            <NotificationBell />
                             <div className="relative ms-3">
                                 <Dropdown>
                                     <Dropdown.Trigger>
@@ -215,10 +246,28 @@ export default function AuthenticatedLayout({ header, children }) {
                             Connections
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            href={route('admin.support-tickets.index')}
+                            active={route().current('admin.support-tickets.*')}
+                        >
+                            Support Tickets
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
                             href={route('admin.users.index')}
                             active={route().current('admin.users.*')}
                         >
                             Users
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.roles.index')}
+                            active={route().current('admin.roles.*')}
+                        >
+                            Roles
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('admin.permissions.index')}
+                            active={route().current('admin.permissions.*')}
+                        >
+                            Permissions
                         </ResponsiveNavLink>
                     </div>
 

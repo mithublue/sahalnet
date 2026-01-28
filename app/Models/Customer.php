@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasNotifications;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -10,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 
 class Customer extends Authenticatable
 {
-    use HasFactory, SoftDeletes, Notifiable;
+    use HasFactory, SoftDeletes, Notifiable, HasNotifications;
 
     protected $fillable = [
         'customer_id',
@@ -98,8 +99,8 @@ class Customer extends Authenticatable
     // Accessors
     public function getFullAddressAttribute(): string
     {
-        return "{$this->address}, {$this->area}, {$this->city}" . 
-               ($this->postal_code ? " - {$this->postal_code}" : '');
+        return "{$this->address}, {$this->area}, {$this->city}" .
+            ($this->postal_code ? " - {$this->postal_code}" : '');
     }
 
     public function getHasCoordinatesAttribute(): bool
@@ -127,9 +128,9 @@ class Customer extends Authenticatable
     {
         return $query->where(function ($q) use ($search) {
             $q->where('name', 'like', "%{$search}%")
-              ->orWhere('email', 'like', "%{$search}%")
-              ->orWhere('phone', 'like', "%{$search}%")
-              ->orWhere('customer_id', 'like', "%{$search}%");
+                ->orWhere('email', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%")
+                ->orWhere('customer_id', 'like', "%{$search}%");
         });
     }
 }

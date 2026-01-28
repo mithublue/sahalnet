@@ -1,5 +1,6 @@
 import { Link, usePage } from '@inertiajs/react';
 import { router } from '@inertiajs/react';
+import NotificationBell from '@/Components/NotificationBell';
 
 export default function CustomerLayout({ header, children }) {
     const { customer } = usePage().props;
@@ -26,33 +27,45 @@ export default function CustomerLayout({ header, children }) {
                             <Link
                                 href={route('customer.dashboard')}
                                 className={`${route().current('customer.dashboard')
-                                        ? 'border-indigo-500 text-gray-900 dark:text-white'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                                    ? 'border-indigo-500 text-gray-900 dark:text-white'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
                                     } inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
                             >
                                 Dashboard
                             </Link>
                             <Link
-                                href="#"
-                                className="border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                                href={route('customer.invoices.index')}
+                                className={`${route().current('customer.invoices.*')
+                                    ? 'border-indigo-500 text-gray-900 dark:text-white'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                                    } inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
                             >
                                 Invoices
                             </Link>
                             <Link
-                                href="#"
-                                className="border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                                href={route('customer.payments.index')}
+                                className={`${route().current('customer.payments.*')
+                                    ? 'border-indigo-500 text-gray-900 dark:text-white'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                                    } inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
                             >
                                 Payments
                             </Link>
                             <Link
-                                href="#"
-                                className="border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                                href={route('customer.connections.index')}
+                                className={`${route().current('customer.connections.*')
+                                    ? 'border-indigo-500 text-gray-900 dark:text-white'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                                    } inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
                             >
                                 Connections
                             </Link>
                             <Link
-                                href="#"
-                                className="border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium"
+                                href={route('customer.support.index')}
+                                className={`${route().current('customer.support.*')
+                                    ? 'border-indigo-500 text-gray-900 dark:text-white'
+                                    : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400'
+                                    } inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium`}
                             >
                                 Support
                             </Link>
@@ -60,6 +73,7 @@ export default function CustomerLayout({ header, children }) {
 
                         {/* User Menu */}
                         <div className="flex items-center space-x-4">
+                            <NotificationBell />
                             <span className="text-sm text-gray-700 dark:text-gray-300">
                                 {customer?.name || 'Customer'}
                             </span>

@@ -23,7 +23,7 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])->group(function () {
-    
+
     // Welcome page for tenants
     Route::get('/', function () {
         return Inertia::render('Welcome', [
@@ -72,22 +72,22 @@ Route::middleware([
     Route::middleware(['auth', 'check_role:super_admin,admin'])->prefix('admin')->name('admin.')->group(function () {
         // Users
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
-        
+
         // Roles & Permissions Management
         Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
         Route::resource('permissions', \App\Http\Controllers\Admin\PermissionController::class)->except(['edit', 'update']);
-        
+
         // Dummy Data Installer (Super Admin Only)
         Route::get('/dummy-data', [\App\Http\Controllers\Admin\DummyDataController::class, 'index'])->name('dummy-data.index');
         Route::post('/dummy-data/install', [\App\Http\Controllers\Admin\DummyDataController::class, 'install'])->name('dummy-data.install');
-        
+
         // Customers
         Route::resource('customers', \App\Http\Controllers\Admin\CustomerController::class);
-        
+
         // Packages
         Route::resource('packages', \App\Http\Controllers\Admin\PackageController::class);
         Route::post('packages/{package}/toggle', [\App\Http\Controllers\Admin\PackageController::class, 'toggle'])->name('packages.toggle');
-        
+
         // Connections
         Route::resource('connections', \App\Http\Controllers\Admin\ConnectionController::class);
         Route::post('connections/{connection}/suspend', [\App\Http\Controllers\Admin\ConnectionController::class, 'suspend'])->name('connections.suspend');
@@ -95,25 +95,40 @@ Route::middleware([
         Route::post('connections/{connection}/renew', [\App\Http\Controllers\Admin\ConnectionController::class, 'renew'])->name('connections.renew');
         Route::post('connections/{connection}/sync-mikrotik', [\App\Http\Controllers\Admin\ConnectionController::class, 'syncToMikroTik'])->name('connections.sync-mikrotik');
         Route::post('connections/{connection}/disconnect-mikrotik', [\App\Http\Controllers\Admin\ConnectionController::class, 'disconnectFromMikroTik'])->name('connections.disconnect-mikrotik');
-        
+
         // MikroTik Routers
         Route::resource('mikrotik-routers', \App\Http\Controllers\Admin\MikroTikRouterController::class);
         Route::post('mikrotik-routers/{mikrotikRouter}/test', [\App\Http\Controllers\Admin\MikroTikRouterController::class, 'testConnection'])->name('mikrotik-routers.test');
         Route::post('mikrotik-routers/{mikrotikRouter}/sync', [\App\Http\Controllers\Admin\MikroTikRouterController::class, 'syncConnections'])->name('mikrotik-routers.sync');
-        
+
         // Invoices
         Route::resource('invoices', \App\Http\Controllers\Admin\InvoiceController::class);
         Route::post('invoices/{invoice}/send', [\App\Http\Controllers\Admin\InvoiceController::class, 'send'])->name('invoices.send');
         Route::post('invoices/{invoice}/mark-paid', [\App\Http\Controllers\Admin\InvoiceController::class, 'markAsPaid'])->name('invoices.mark-paid');
         Route::get('invoices/{invoice}/pdf', [\App\Http\Controllers\Admin\InvoiceController::class, 'downloadPdf'])->name('invoices.pdf');
-        
+
         // Payments
         Route::resource('payments', \App\Http\Controllers\Admin\PaymentController::class)->except(['edit', 'update']);
-        
+
         // Billing Cycles
         Route::resource('billing-cycles', \App\Http\Controllers\Admin\BillingCycleController::class);
         Route::post('billing-cycles/{billingCycle}/generate', [\App\Http\Controllers\Admin\BillingCycleController::class, 'generateInvoices'])->name('billing-cycles.generate');
         Route::post('billing-cycles/{billingCycle}/close', [\App\Http\Controllers\Admin\BillingCycleController::class, 'close'])->name('billing-cycles.close');
+
+        // Support Tickets
+        Route::get('support-tickets', [\App\Http\Controllers\Admin\SupportTicketController::class, 'index'])->name('support-tickets.index');
+        Route::get('support-tickets/{supportTicket}', [\App\Http\Controllers\Admin\SupportTicketController::class, 'show'])->name('support-tickets.show');
+        Route::patch('support-tickets/{supportTicket}', [\App\Http\Controllers\Admin\SupportTicketController::class, 'update'])->name('support-tickets.update');
+        Route::post('support-tickets/{supportTicket}/reply', [\App\Http\Controllers\Admin\SupportTicketController::class, 'reply'])->name('support-tickets.reply');
+        Route::post('support-tickets/{supportTicket}/assign', [\App\Http\Controllers\Admin\SupportTicketController::class, 'assign'])->name('support-tickets.assign');
+        Route::post('support-tickets/{supportTicket}/close', [\App\Http\Controllers\Admin\SupportTicketController::class, 'close'])->name('support-tickets.close');
+    });
+
+    // Notifications (available to both admin and customer)
+    Route::middleware(['auth'])->group(function () {
+        Route::get('/notifications', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifications.index');
+        Route::post('/notifications/{id}/read', [\App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
+        Route::post('/notifications/read-all', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead'])->name('notifications.read-all');
     });
 
     // Customer Portal Routes
@@ -127,7 +142,32 @@ Route::middleware([
         // Authenticated customer routes
         Route::middleware('auth:customer')->group(function () {
             Route::post('/logout', [\App\Http\Controllers\Customer\Auth\CustomerAuthController::class, 'logout'])->name('logout');
+
+            // Dashboard
             Route::get('/dashboard', [\App\Http\Controllers\Customer\CustomerDashboardController::class, 'index'])->name('dashboard');
+
+            // Invoices
+            Route::get('/invoices', [\App\Http\Controllers\Customer\CustomerInvoiceController::class, 'index'])->name('invoices.index');
+            Route::get('/invoices/{invoice}', [\App\Http\Controllers\Customer\CustomerInvoiceController::class, 'show'])->name('invoices.show');
+            Route::get('/invoices/{invoice}/download', [\App\Http\Controllers\Customer\CustomerInvoiceController::class, 'download'])->name('invoices.download');
+
+            // Payments
+            Route::get('/payments', [\App\Http\Controllers\Customer\CustomerPaymentController::class, 'index'])->name('payments.index');
+
+            // Connections
+            Route::get('/connections', [\App\Http\Controllers\Customer\CustomerConnectionController::class, 'index'])->name('connections.index');
+
+            // Support Tickets
+            Route::get('/support', [\App\Http\Controllers\Customer\CustomerSupportController::class, 'index'])->name('support.index');
+            Route::get('/support/create', [\App\Http\Controllers\Customer\CustomerSupportController::class, 'create'])->name('support.create');
+            Route::post('/support', [\App\Http\Controllers\Customer\CustomerSupportController::class, 'store'])->name('support.store');
+            Route::get('/support/{supportTicket}', [\App\Http\Controllers\Customer\CustomerSupportController::class, 'show'])->name('support.show');
+            Route::post('/support/{supportTicket}/reply', [\App\Http\Controllers\Customer\CustomerSupportController::class, 'reply'])->name('support.reply');
+
+            // Profile
+            Route::get('/profile', [\App\Http\Controllers\Customer\CustomerProfileController::class, 'edit'])->name('profile.edit');
+            Route::patch('/profile', [\App\Http\Controllers\Customer\CustomerProfileController::class, 'update'])->name('profile.update');
+            Route::patch('/profile/password', [\App\Http\Controllers\Customer\CustomerProfileController::class, 'updatePassword'])->name('profile.password');
         });
     });
 
