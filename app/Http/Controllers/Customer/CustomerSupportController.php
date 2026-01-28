@@ -50,7 +50,7 @@ class CustomerSupportController extends Controller
         $ticket = SupportTicket::create($validated);
 
         // Notify all admin users
-        $admins = \App\Models\User::role('super_admin')->get();
+        $admins = \App\Models\User::all(); // Get all admin users
         foreach ($admins as $admin) {
             $admin->createNotification('ticket_created', [
                 'ticket_id' => $ticket->id,

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class NotificationController extends Controller
 {
@@ -18,12 +20,26 @@ class NotificationController extends Controller
             return response()->json(['notifications' => [], 'count' => 0]);
         }
 
-        $notifications = $user->getUnreadNotifications();
+        try {
+            $notifications = $user->getUnreadNotifications();
 
-        return response()->json([
-            'notifications' => $notifications,
-            'count' => $notifications->count()
-        ]);
+            return response()->json([
+                'notifications' => $notifications,
+                'count' => $notifications->count()
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Notification fetch error', [
+                'error' => $e->getMessage(),
+                'user_id' => $user->id,
+                'user_type' => get_class($user)
+            ]);
+
+            return response()->json([
+                'notifications' => [],
+                'count' => 0,
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function markAsRead($id)

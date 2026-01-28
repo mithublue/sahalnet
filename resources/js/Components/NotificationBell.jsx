@@ -15,43 +15,32 @@ export default function NotificationBell() {
 
     const fetchNotifications = async () => {
         try {
+            console.log('Fetching notifications from:', route('notifications.index'));
             const response = await fetch(route('notifications.index'));
+            console.log('Response status:', response.status);
             const data = await response.json();
-            setNotifications(data.notifications);
-            setCount(data.count);
+            console.log('Notifications data:', data);
+            setNotifications(data.notifications || []);
+            setCount(data.count || 0);
         } catch (error) {
             console.error('Failed to fetch notifications:', error);
         }
     };
 
     const markAsRead = async (id) => {
-        try {
-            await fetch(route('notifications.read', id), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                }
-            });
-            fetchNotifications();
-        } catch (error) {
-            console.error('Failed to mark notification as read:', error);
-        }
+        router.post(route('notifications.read', id), {}, {
+            preserveScroll: true,
+            onSuccess: () => fetchNotifications(),
+            onError: (error) => console.error('Failed to mark notification as read:', error)
+        });
     };
 
     const markAllAsRead = async () => {
-        try {
-            await fetch(route('notifications.read-all'), {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                }
-            });
-            fetchNotifications();
-        } catch (error) {
-            console.error('Failed to mark all as read:', error);
-        }
+        router.post(route('notifications.read-all'), {}, {
+            preserveScroll: true,
+            onSuccess: () => fetchNotifications(),
+            onError: (error) => console.error('Failed to mark all as read:', error)
+        });
     };
 
     const handleNotificationClick = (notification) => {
